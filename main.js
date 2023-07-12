@@ -44,13 +44,14 @@ function render(time) {
 
     const days = g('#days')
     days.innerHTML = ''
+    const fragment = document.createDocumentFragment()
     let n = 0
     for (let i = 1; i < 月初星期几; i++) {
       const li = document.createElement('li')
       const d = new Date(月初星期几 - 86400 * 1000 * i)
       li.textContent = d.getDate()
       li.classList.add('calendar-days-disabled')
-      days.prepend(li)
+      fragment.prepend(li)
       n += 1
     }
 
@@ -69,8 +70,27 @@ function render(time) {
         }
         li.classList.add('calendar-days-selected')
         selectedLi = li
+        if (events) {
+          const fragment = document.createDocumentFragment()
+          events.map(event => {
+            const div = document.createElement('div')
+            div.classList.add('events-item')
+            div.textContent = event
+            fragment.append(div)
+          })
+          g('#events').innerHTML = ''
+          g('#events').append(fragment)
+        } else {
+          g('#events').innerHTML = '<div>无</div>'
+        }
       }
-      days.append(li)
+      const key = `${year}-${month}-${i}`
+      const events = window.data[key]
+      if (events) {
+        li.classList.add('calendar-days-hasEvents')
+      }
+      // window.data[key] 
+      fragment.append(li)
       n += 1
     }
     let i = 月末星期几 + 1
@@ -80,8 +100,9 @@ function render(time) {
       const d = new Date(月末 - 0 + 86400 * 1000 * delta)
       li.textContent = d.getDate()
       li.classList.add('calendar-days-disabled')
-      days.append(li)
+      fragment.append(li)
       i++
     }
+    days.append(fragment)
   }
 }

@@ -38,6 +38,7 @@
   height: 42px;
   line-height: 42px;
   border: 1px solid transparent;
+  position: relative;
 }
 .calendar-days-today {
   background-color: #fed32c;
@@ -49,6 +50,16 @@
 }
 .calendar-days > li.calendar-days-disabled {
   color: #ccc;
+}
+.calendar-days > li.calendar-days-hasEvents::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background-color: green;
 }
 .calendar-actions {
   display: flex;
@@ -68,4 +79,11 @@
   display: flex;
 }
 .calendar-actions-right > button {
+}
+
+.events-wrapper {
+  padding: 16px;
+}
+.events-item {
+  padding: 4px 0;
 }
